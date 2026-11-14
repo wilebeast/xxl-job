@@ -21,7 +21,7 @@ class OfflineRiskProductionRunnerTest {
         assertThat(launcher.environment).containsExactlyInAnyOrderEntriesOf(Map.of(
                 "OFFLINE_DRY_RUN", "false",
                 "OFFLINE_AS_OF", "2026-11-13T15:00:00Z"));
-        assertThat(launcher.timeout).isEqualTo(Duration.ofSeconds(60));
+        assertThat(launcher.timeout).isEqualTo(Duration.ofSeconds(55));
         assertThat(output).isEqualTo(
                 "{\"status\":\"completed\",\"dry_run\":false,\"idempotent_replay\":true}");
     }

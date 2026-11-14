@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -26,10 +27,26 @@ public class JvmFixedProcessLauncher implements FixedProcessLauncher {
                 throw new IllegalStateException("read fixed process output", error);
             }
         });
-        if (!process.waitFor(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-            process.destroyForcibly();
-            throw new IllegalStateException("fixed offline preview timed out");
+        try {
+            if (!process.waitFor(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
+                throw new IllegalStateException("fixed offline process timed out");
+            }
+            return new ProcessOutput(process.exitValue(), output.get(5, TimeUnit.SECONDS).trim());
+        } finally {
+            terminateProcessTree(process);
         }
-        return new ProcessOutput(process.exitValue(), output.get(5, TimeUnit.SECONDS).trim());
+    }
+
+    private static void terminateProcessTree(Process process) {
+        List<ProcessHandle> descendants = process.descendants().collect(Collectors.toList());
+        for (int index = descendants.size() - 1; index >= 0; index--) {
+            ProcessHandle descendant = descendants.get(index);
+            if (descendant.isAlive()) {
+                descendant.destroyForcibly();
+            }
+        }
+        if (process.isAlive()) {
+            process.destroyForcibly();
+        }
     }
 }

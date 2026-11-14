@@ -23,7 +23,7 @@ class OfflineRiskPreviewRunnerTest {
                 "OFFLINE_DRY_RUN", "true",
                 "OFFLINE_AS_OF", "2026-11-13T11:00:00Z",
                 "OFFLINE_RUN_ID", "xxl-shadow-20261113T110000Z"));
-        assertThat(launcher.timeout).isEqualTo(Duration.ofSeconds(60));
+        assertThat(launcher.timeout).isEqualTo(Duration.ofSeconds(55));
         assertThat(output).isEqualTo("{\"status\":\"preview\",\"dry_run\":true}");
     }
 

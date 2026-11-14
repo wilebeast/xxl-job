@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RiskShadowJobHandlersTest {
     @Test
-    void exposesOnlyApprovedShadowHandlers() {
+    void exposesOnlyApprovedHandlers() {
         Set<String> handlers = Stream.of(RiskShadowJobHandlers.class.getDeclaredMethods())
                 .map(method -> method.getAnnotation(XxlJob.class))
                 .filter(annotation -> annotation != null)
@@ -23,7 +23,8 @@ class RiskShadowJobHandlersTest {
                 "riskWarehouseCompactionShadow",
                 "riskFeatureSnapshotShadow",
                 "offlineRiskScanShadow",
-                "offlineRiskScan");
+                "offlineRiskScan",
+                "schedulerOverlapProbe");
     }
 
     @Test

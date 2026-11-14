@@ -16,6 +16,13 @@ public record OfflineRiskShadowRequest(Instant asOf) {
         if (clock == null) {
             throw new IllegalArgumentException("clock is required");
         }
+        return parse(raw, clock.instant());
+    }
+
+    public static OfflineRiskShadowRequest parse(String raw, Instant defaultAsOf) {
+        if (defaultAsOf == null) {
+            throw new IllegalArgumentException("default as_of is required");
+        }
         String input = raw == null || raw.isBlank() ? "{}" : raw;
         final JsonNode object;
         try {
@@ -36,7 +43,7 @@ public record OfflineRiskShadowRequest(Instant asOf) {
 
         JsonNode asOfValue = object.get("as_of");
         if (asOfValue == null || asOfValue.isNull() || asOfValue.asText().isBlank()) {
-            return new OfflineRiskShadowRequest(clock.instant().truncatedTo(ChronoUnit.HOURS));
+            return new OfflineRiskShadowRequest(defaultAsOf.truncatedTo(ChronoUnit.HOURS));
         }
         final Instant asOf;
         try {

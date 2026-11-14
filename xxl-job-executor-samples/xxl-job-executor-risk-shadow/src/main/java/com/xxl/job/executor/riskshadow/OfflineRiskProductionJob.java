@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
+import java.time.Instant;
 
 @Component
 public class OfflineRiskProductionJob {
@@ -21,7 +22,11 @@ public class OfflineRiskProductionJob {
     }
 
     public ProductionExecution execute(String rawParameter) throws Exception {
-        OfflineRiskShadowRequest request = OfflineRiskShadowRequest.parse(rawParameter, clock);
+        return execute(rawParameter, clock.instant());
+    }
+
+    public ProductionExecution execute(String rawParameter, Instant scheduledAt) throws Exception {
+        OfflineRiskShadowRequest request = OfflineRiskShadowRequest.parse(rawParameter, scheduledAt);
         return new ProductionExecution(request.asOf().toString(), runner.run(request.asOf()));
     }
 

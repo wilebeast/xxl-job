@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class OfflineRiskPreviewRunner {
     private static final List<String> COMMAND = List.of("/offline-risk");
-    private static final Duration TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration TIMEOUT = Duration.ofSeconds(55);
     private static final DateTimeFormatter RUN_ID_TIME =
             DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'").withZone(ZoneOffset.UTC);
 

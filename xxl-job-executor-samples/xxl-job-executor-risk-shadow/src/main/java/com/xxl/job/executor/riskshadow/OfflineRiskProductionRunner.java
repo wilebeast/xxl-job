@@ -10,7 +10,7 @@ import java.util.Map;
 @Component
 public class OfflineRiskProductionRunner {
     private static final List<String> COMMAND = List.of("/offline-risk");
-    private static final Duration TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration TIMEOUT = Duration.ofSeconds(55);
 
     private final FixedProcessLauncher launcher;
 
